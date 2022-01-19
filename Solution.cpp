@@ -17,7 +17,6 @@
 #define fprecision(x,y) fixed<<setprecision(y)<<x
 #define T()            int x; cin>>x; while(x--)
 #define mk(arr,n,type)  type *arr = new type[n]; //dynamic
-#define MAX 100
 using namespace std;
 
 void a_s_c(){
@@ -28,74 +27,84 @@ void a_s_c(){
     //#endif
 }
 
+//STACK WITH LinkedList
 
-// Implement stack
+class Node{
+public:
+	int data;
+	Node* next;
+	Node(int val){
+		data = val;
+		next = NULL;
+	}
+};
+
+
 class Stack{
-	int top;
+	Node* top;
 public:
 	Stack(){
-		top =-1;
+		top=NULL;
 	}
-	int arr[MAX];
 
-	//push-op
+	//O(1): TOP Points to Last Added Node
 	void push(int val){
-		//size is FULL
-		if(top>=MAX){
-			cout<<"STACKOVERFLOW";
+		Node* node = new Node(val);
+		if(top==NULL){
+			top=node;
 		}else{
-			// still have some space to Add Elements
-			arr[++top]=val;
-			cout<<"PUSH:"<<val<<"\n";
-		}
-	} 
-
-	//pop -op
-	int pop(){
-		if(top==-1){
-			cout<<"STACK EMPTY";
-			return -1;
-		}else{
-			int x = arr[top--];
-			return x;
+			node->next = top;
+			top= node; 
 		}
 	}
 
-	//TOP
-	int Top(){
-		if(top==-1){
-			cout<<"STACK EMPTY";
-			return -1;
+	//
+	void pop(){
+		if(top==NULL){
+			cout<<"Heap EMPTY";
 		}else{
-			return arr[top];
+			//This is TOP
+			Node* temp= top;
+
+			// Move TOP to Next 
+			top= top->next;
+
+			//Free Up Node Bro;)
+			temp->next=NULL;
+			free(temp);
 		}
 	}
 
-	//Empty
+	int TOP(){
+		if(top==NULL){
+			cout<<"Heap EMPTY";
+			return -1;
+		}else{
+			return top->data;
+		}
+	}
+
 	bool isEmpty(){
-		if(top==-1) return true;
+		if(top==NULL) return true;
 		else return false;
 	}
-
 };
+
 
 int main(){
     a_s_c();
+    Stack s = Stack(); // 19->15->14->13->12
 
-    Stack s = Stack();
-    s.push(8);
-    s.push(10);
-    s.push(11);
-    s.push(8);
-    s.push(10);
-    s.push(11);
-    s.push(8);
-    s.push(10);
-    s.push(11);
-    
+    s.push(12);
+    s.push(13);
+    s.push(14);
+    s.push(15);
+    s.push(19);
+
     while(!s.isEmpty()){
-    	cout<<s.Top()<<"\n";
+    	cout<<s.TOP()<<" ";
     	s.pop();
     }
+    
     return 0;
 }
